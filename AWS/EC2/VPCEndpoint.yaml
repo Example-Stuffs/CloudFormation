@@ -1,0 +1,92 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CAI DRI Lambda Code Pipeline and Roles
+
+# Metadata:
+#   template metadata
+
+# Parameters:
+#   set of parameters
+
+# Mappings:
+#   set of mappings
+
+# Conditions:
+#   set of conditions
+
+# Transform:
+#   set of transforms
+
+Resources:
+  MyVPCEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties: 
+      # PolicyDocument: Json
+      # Update requires: No interruption
+      # PolicyDocument:
+      #   Version: 2012-10-17
+      #   Statement:
+      #     - Effect: Allow
+      #       Principal: '*'
+      #       Action:
+      #         - 's3:GetObject'
+      #       Resource:
+      #         - 'arn:aws:s3:::examplebucket/*'
+
+      # PrivateDnsEnabled: Boolean
+      # Update requires: No interruption
+      # PrivateDnsEnabled: false
+
+      # RouteTableIds: 
+      #   - String
+      # Update requires: No interruption
+      # RouteTableIds: 
+      #   - 'rtb-012ab345c67def89a'
+
+      # SecurityGroupIds: 
+      #   - String
+      # Update requires: No interruption
+      SecurityGroupIds: 
+        - 'sg-0a0a9876b2b2543'
+
+      # https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeVpcEndpointServices.html
+      # ServiceName: String
+      # Update requires: Replacement
+      ServiceName: 'com.amazonaws.us-east-1.s3'
+
+      # SubnetIds: 
+      #   - String
+      # Update requires: No interruption
+      SubnetIds: 
+        - 'subnet-0a0a1234'
+
+      # VpcEndpointType: String
+      # VpcEndpointType: 'Gateway' # or 'Interface'
+      # Update requires: Replacement
+      VpcEndpointType: 'Interface'
+      
+      # VpcId: String
+      # Update requires: Replacement
+      VpcId: 'vpc-0a0a12b3c4de5f670'
+
+Outputs:
+  MyVPCEndpointId:
+    Value: !Ref MyVPCEndpoint
+    Description: The ID of the VPC endpoint.
+    Export:
+      Name: !Sub "${AWS::StackName}:MyVPCEndpointId"
+  MyVPCEndpointCreationTimestamp:
+    Value: !GetAtt MyVPCEndpoint.CreationTimestamp
+    Description: The date and time the VPC endpoint was created.
+    Export:
+      Name: !Sub "${AWS::StackName}:MyVPCEndpointCreationTimestamp"
+  MyVPCEndpointDnsEntries:
+    Value: !GetAtt MyVPCEndpoint.DnsEntries
+    Description: The DNS entries for the endpoint.
+    Export:
+      Name: !Sub "${AWS::StackName}:MyVPCEndpointDnsEntries"
+  MyVPCEndpointNetworkInterfaceIds:
+    Value: !GetAtt MyVPCEndpoint.NetworkInterfaceIds
+    Description: One or more network interface IDs. (Interface endpoint type only)
+    Export:
+      Name: !Sub "${AWS::StackName}:MyVPCEndpointNetworkInterfaceIds"
